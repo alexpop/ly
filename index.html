@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>LY by <i>Caimans</i></h1>
+      <h1>LoanYourself by <i>Caimans</i></h1>
       <h2>Signup page</h2>
     </header>
 
@@ -45,11 +45,17 @@
     </template>
 
     <template id="results">
-      <div class="results" v-if="display">
-        <h3>Welcome {{ punter }}</h3>
-        <p>Registration have been successful, this is the IBAN account you need to fuel the happiness:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
-        <p>A debit card will be in your post tomorrow. Let's do some online spending now!</p>
-        <button @click="back_to_signup()">Continue</button>
+      <div class="results">
+        <div v-if="paperwork">
+          <h3>Please wait, paperworking...</h3>
+          <img src="images/paperwork.gif">
+        </div>
+        <div v-if="complete">
+          <h3>Welcome {{ punter }}!</h3>
+          <p>Successful registration, this is the IBAN account you need to fuel the happiness:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
+          <p>A debit card will be in your post by tomorrow. Let's do some online spending now!</p>
+          <button @click="back_to_signup()">Continue</button>
+      </div>
       </div>
     </template>
 
@@ -63,7 +69,6 @@
   </div>
 
   <script src='https://unpkg.com/vue@2.1.6/dist/vue.js'></script>
-  <script src='https://unpkg.com/vue-router@2.1.1/dist/vue-router.js'></script>
   <script src="js/index.js"></script>
 </body>
 </html>

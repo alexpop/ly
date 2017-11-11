@@ -27,7 +27,6 @@ var SignupForm = Vue.component('signup-form', {
 
   // METHODS
   methods: {
-    get_full_name: function get_full_name(){console.log(this.fullname)},
     valid_fullname(value, msg) {
       if (/^.+ +.+$/.test(value)) {
         this[msg] = '';
@@ -52,6 +51,7 @@ var SignupForm = Vue.component('signup-form', {
     },
     on_signup() {
       window.localStorage.setItem("fullname", this.fullname);
+      window.localStorage.setItem("firstname", this.fullname.split(" ")[0]);
       this.fullname = '';
       this.fullname_msg = '';
       this.disable_btn = true;
@@ -71,14 +71,14 @@ var Results = Vue.component('results', {
   data() {
     apiKey = window.localStorage.getItem("API_KEY");
     data = {
-      punter: window.localStorage.getItem("fullname"),
-      display: true,
+      punter: window.localStorage.getItem("firstname"),
+      complete: false,
+      paperwork: true,
       users: []
     }
 
     if (apiKey == null) {
-      alert("Please store your API_KEY in the browser Local Storage and try again!");
-      data.display = false
+      alert("Please store your API_KEY in the browser's Local Storage and try again!");
       return data
     }
 
@@ -153,6 +153,8 @@ var Results = Vue.component('results', {
               }).then(function(response) { return response.json();
               }).then(function(json) {
                 console.log("Successfully added funds to beneficiary");
+                data.paperwork = false;
+                data.complete = true;
               }).catch(function(error) { console.log('Error adding funds go beneficiary via POST: ' + error.message); });
             }).catch(function(error) { console.log('Error creating beneficiary via POST: ' + error.message); });
           }).catch(function(error) { console.log('Error waiting for ledger to be OK: ' + error.message); });
