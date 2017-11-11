@@ -16,6 +16,20 @@ body {
   align-items: center;
 }
 
+.product {
+  font-family: 'Calibri', sans-serif;
+  color: #ffffff;
+  font-size: 4em;
+  font-weight: 700;
+}
+
+.company {
+  font-family: 'Calibri', sans-serif;
+  color: #ffffff;
+  font-size: 2em;
+  font-weight: 900;
+}
+
 header {
   margin: 30px 0;
   text-align: center;
@@ -41,7 +55,7 @@ header a {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 .signup:before {
@@ -105,7 +119,7 @@ form .form-group:last-child button {
   border: none;
   background: linear-gradient(to left, #FF8700, #FFB100);
   padding: 10px 30px;
-  border-radius: 20px;
+  border-radius: 50px;
   color: #FFFFFF;
   font-size: .8em;
   font-weight: bold;

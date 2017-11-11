@@ -73,8 +73,7 @@ var Results = Vue.component('results', {
     data = {
       punter: window.localStorage.getItem("firstname"),
       complete: false,
-      paperwork: true,
-      users: []
+      paperwork: true
     }
 
     if (apiKey == null) {
@@ -95,7 +94,7 @@ var Results = Vue.component('results', {
       if(contentType && contentType.includes("application/json")) { return response.json(); }
       throw new TypeError("Oops, we haven't got JSON!");
     }).then(function(json) {
-      console.log("Successfully created user with id="+json.enduser_id);
+      console.log("Successfully created user "+json.enduser_id);
       window.localStorage.setItem("enduser_id", json.enduser_id);
       fetch("https://play.railsbank.com/v1/customer/endusers/"+json.enduser_id+"/wait", {
         method : "GET", headers: myHeaders
@@ -161,7 +160,6 @@ var Results = Vue.component('results', {
         }).catch(function(error) { console.log('Error creating ledger via POST: ' + error.message); });
       }).catch(function(error) { console.log('Error checking user OK state: ' + error.message); });
     }).catch(function(error) { console.log('Error with your endusers POST: ' + error.message); });
-
 
     return data
   },
