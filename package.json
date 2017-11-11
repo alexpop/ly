@@ -1,0 +1,16 @@
+{
+  "name": "my",
+  "version": "1.0.0",
+  "description": "ly project dir",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-server-livereload": "^1.9.0"
+  },
+  "scripts": {
+    "test": "ls"
+  },
+  "author": "Caimans",
+  "license": "ISC"
+}
