@@ -52,9 +52,7 @@ var SignupForm = Vue.component('signup-form', {
       }
     },
     on_signup() {
-      console.log("In on_signup(), fullname="+this.fullname);
-      //debugger;
-      window.localStorage.setItem("fullname", this.fullname+'extra');
+      window.localStorage.setItem("fullname", this.fullname);
 
       this.fullname = '';
       this.fullname_msg = '';
