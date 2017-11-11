@@ -76,9 +76,10 @@ form {
 form .form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 20px 0;
+  margin: 0 0 35px 0;
   color: #8F949B;
-  font-size: .9em;
+  font-size: 1em;
+  font-weight: 700;
 }
 form .form-group label {
   margin: 0 0 16px 0;
@@ -96,17 +97,13 @@ form .form-group span#characters {
 }
 
 .form-group input[type="text"],
-.form-group input[type="password"] {
+.form-group input[type="number"] {
   border: none;
   outline: none;
   background: transparent;
   padding: 0 0 10px 0;
-  font-size: 1em;
+  font-size: 1.2em;
   border-bottom: 1px dotted #8F949B;
-}
-
-.form-group input[type="password"] {
-  color: #FF3400;
 }
 
 form .form-group:last-child {
