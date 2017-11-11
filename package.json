@@ -5,6 +5,7 @@
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
+    "cors": "^2.8.4",
     "gulp": "^3.9.1",
     "gulp-server-livereload": "^1.9.0"
   },
