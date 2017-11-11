@@ -72,13 +72,33 @@ var Results = Vue.component('results', {
     apiKey = window.localStorage.getItem("API_KEY");
     data = {
       punter: window.localStorage.getItem("fullname"),
-      display: true
+      display: true,
+      users: []
     }
+
     if (apiKey == null) {
       alert("Please store your API_KEY in the browser Local Storage and try again!");
       data.display = false
       return data
     }
+
+    // function myFunction(uri, apiKey, ) {
+    //   console.log("p1="+p1);
+    // }
+    // myFunction(123);
+
+    var xhr = new XMLHttpRequest()
+    var self = this;
+    xhr.open('GET', 'https://play.railsbank.com/v1/customer/endusers');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('Authorization', 'API-Key '+apiKey);
+    xhr.onload = function () {
+      self.users = JSON.parse(xhr.responseText)
+      console.log(self.users[0].enduser_id);
+    }
+    xhr.send();
+
     return data
   },
 
