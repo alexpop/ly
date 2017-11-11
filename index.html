@@ -45,9 +45,9 @@
 
     <template id="results">
       <div class="results">
-        <h4>Welcome {{ get_full_name }}</h4>
-        <p>Form data gets saved and/or sent to server. There could also be a confirmation sent to email address</p>
-        <p>Button would take you to some sort of after signup page.<br>In this case it just shows the form again</p>
+        <h3>Welcome {{ punter }}</h3>
+        <p>Registration have been successful, this is the IBAN account you need to fuel the happiness:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
+        <p>A debit card will be in your post tomorrow. Let's do some online spending now!</p>
         <button @click="back_to_signup()">Continue</button>
       </div>
     </template>
@@ -63,6 +63,6 @@
 
   <script src='https://unpkg.com/vue@2.1.6/dist/vue.js'></script>
   <script src='https://unpkg.com/vue-router@2.1.1/dist/vue-router.js'></script>
-  <script  src="js/index.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html>
