@@ -1,5 +1,4 @@
 var SignupForm = Vue.component('signup-form', {
-
   // TEMPLATE
   template: '#signup-form',
 
@@ -53,30 +52,34 @@ var SignupForm = Vue.component('signup-form', {
     },
     on_signup() {
       window.localStorage.setItem("fullname", this.fullname);
-
       this.fullname = '';
       this.fullname_msg = '';
       this.disable_btn = true;
       this.$emit('change_comp', 'results');
     },
-
     show_terms() {
       this.$emit('change_comp', 'terms');
     }
   }
-
 });
 
 var Results = Vue.component('results', {
-
   // TEMPLATE
   template: '#results',
 
   // DATA
   data() {
-    return {
-      punter: window.localStorage.getItem("fullname")
+    apiKey = window.localStorage.getItem("API_KEY");
+    data = {
+      punter: window.localStorage.getItem("fullname"),
+      display: true
     }
+    if (apiKey == null) {
+      alert("Please store your API_KEY in the browser Local Storage and try again!");
+      data.display = false
+      return data
+    }
+    return data
   },
 
   // METHODS
@@ -86,29 +89,23 @@ var Results = Vue.component('results', {
       this.$emit('change_comp', 'signup-form');
     }
   }
-
 });
 
 var Terms = Vue.component('terms', {
-
   // TEMPLATE
   template: '#terms',
-
   // METHODS
   methods: {
     back_to_signup() {
       this.$emit('change_comp', 'signup-form');
     }
   }
-
 });
 
 
 new Vue({
-
   // ELEMENT
   el: '#app',
-
 
   // DATA
   data() {
@@ -116,7 +113,6 @@ new Vue({
       compname: 'signup-form'
     }
   },
-
 
   // COMPONENTS
   components: {
@@ -130,5 +126,4 @@ new Vue({
       this.compname = comp;
     }
   }
-
 });
