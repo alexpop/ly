@@ -293,11 +293,17 @@ var Transaction = Vue.component('transaction', {
           }).then(function(json) {
             console.log("BALANCE " + json.amount);
             this.data["balance"] = json.amount;
+
+            if (window.localStorage.getItem("loanamount") / 10 > json.amount) {
+              topup();
+            }
+
           });
         }, 4000);
       });
     },
-    topup(amount) {
+    topup() {
+      amount = window.localStorage.getItem("loanamount");
       topUpRequest = {
         "amount": amount,
         "uk_sort_code": window.localStorage.getItem("send_ledger_sort_code"),
@@ -390,8 +396,8 @@ new Vue({
   // DATA
   data() {
     return {
-      //compname: 'signup-form'
-      compname: 'transaction'
+      compname: 'signup-form'
+      //compname: 'transaction'
     }
   },
 
