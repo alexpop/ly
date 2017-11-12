@@ -33,7 +33,7 @@ var SignupForm = Vue.component('signup-form', {
         this.disable_btn = false;
         return true;
       } else {
-        this[msg] = 'Keep typing...waiting for a valid name';
+        this[msg] = 'Keep typing... min two characters required';
         this.disable_btn = true;
         return false;
       }
@@ -210,7 +210,6 @@ var Results = Vue.component('results', {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     proceed_to_transactions() {
-      console.log('In proceed_to_transactions()');
       this.$emit('change_comp', 'transaction');
     }
   }
@@ -232,6 +231,7 @@ var Transaction = Vue.component('transaction', {
   methods: {
     buy_stuff(event) {
       amount = Number(event.target.id);
+      console.log("BUY("+amount+")");
       details = {
         "ledger_id": window.localStorage.getItem("send_ledger_id"),
         "beneficiary_id": window.localStorage.getItem("receive_beneficiary_id"),
@@ -247,14 +247,10 @@ var Transaction = Vue.component('transaction', {
         method : "POST", headers: myHeaders, mode: 'cors',
         body : JSON.stringify(details)
       }).then(function(response) {
-        console.log("BUYING STUFF ");
         return response.json();
       }).then(function() {
-        console.log("REFRESHING LIST OF TRANSACTIONS")
         var result;
-
         setTimeout(function() {
-          console.log("working...");
           fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id") + "/entries", {
             method: 'GET',
             headers: myHeaders,
@@ -262,7 +258,7 @@ var Transaction = Vue.component('transaction', {
           }).then(function(response) {
             return response.json();
           }).then(function(json) {
-            console.log("LEDGER ENTRIES (COUNT) rgfdgdfg" + json.length);
+            console.log("UPDATING TRANSACTIONS")
             this.data["dummy_transactions"] = json;
             var objDiv = document.getElementById("list_of_transactions");
             objDiv.scrollTop = objDiv.scrollHeight;
@@ -275,11 +271,11 @@ var Transaction = Vue.component('transaction', {
           }).then(function(response) {
             return response.json();
           }).then(function(json) {
-            console.log("BALANCE " + json.amount);
+            console.log("UPDATING BALANCE " + json.amount);
             this.data["balance"] = json.amount;
 
             if (window.localStorage.getItem("loanamount") / 10 > json.amount) {
-              this.topup();
+              //this.topup();
             }
 
           });
@@ -303,12 +299,10 @@ var Transaction = Vue.component('transaction', {
         body : JSON.stringify(topUpRequest)
       }).then(function(response) { return response.json();
       }).then(function(json) {
-        console.log("SEND LEDGER(funding) £"+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" w/ transaction: "+json.transaction_id);
-        console.log("REFRESHING LIST OF TRANSACTIONS")
+        console.log("GET LOAN £"+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" w/ transaction: "+json.transaction_id);
         var result;
 
         setTimeout(function() {
-          console.log("working...");
           fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id") + "/entries", {
             method: 'GET',
             headers: myHeaders,
@@ -329,7 +323,7 @@ var Transaction = Vue.component('transaction', {
           }).then(function(response) {
             return response.json();
           }).then(function(json) {
-            console.log("BALANCE " + json.amount);
+            console.log("UPDATING BALANCE " + json.amount);
             this.data["balance"] = json.amount;
           });
         }, 20000);
@@ -365,7 +359,6 @@ var Transaction = Vue.component('transaction', {
     }).then(function(response) {
       return response.json();
     }).then(function(json) {
-      console.log("BALANCE " + json.amount);
       data.balance = json.amount;
     });
 
