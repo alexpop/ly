@@ -146,7 +146,7 @@ var Results = Vue.component('results', {
               body : JSON.stringify(topUpRequest)
             }).then(function(response) { return response.json();
             }).then(function(json) {
-              console.log("SEND LEDGER(funding) w/ "+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"£, transaction: "+json.transaction_id);
+              console.log("SEND LEDGER(funding) £"+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" w/ transaction: "+json.transaction_id);
 
 // Create GBP receive_ledger
               fetch("https://play.railsbank.com/v1/customer/ledgers", {

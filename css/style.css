@@ -46,6 +46,16 @@ header a {
   color: inherit;
 }
 
+.money-in-row {
+  width: 80%;
+  color: #008000;
+  font-weight: 800;
+}
+
+.money-out-row {
+  width: 80%;
+}
+
 .signup {
   width: 700px;
   height: 460px;

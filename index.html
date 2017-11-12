@@ -46,27 +46,28 @@
     <template id="transaction">
       <div class="transaction">
         <h3>Transaction History</h3>
-        <div style="width: 500px; height: 300px; overflow: auto;">
-          <table>
+        <div style="width: 20em; height: 19em; overflow: auto; margin-right: 0.5em;">
+          <table style="width: 100%;">
             <tr v-for = "transaction in dummy_transactions">
-              <td v-if="transaction.amount > 0">Loan</td>
-              <td v-if="transaction.amount < 0">Online payment</td>
-              <td>£{{Math.abs(transaction.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
+              <td class="money-in-row" v-if="transaction.amount > 0">Loan</td>
+              <td class="money-out-row" v-if="transaction.amount < 0">Online payment</td>
+              <td v-if="transaction.amount > 0" class="money-in-row">£{{Math.abs(transaction.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
+              <td class="money-out-row" v-if="transaction.amount < 0">£{{Math.abs(transaction.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
             </tr>
           </table>
         </div>
-        <div>Account balance: £{{balance}}</div>
-        <button type="button">Click me!!!</button>
-        <button type="button">Click me!!!</button>
-        <button type="button">Click me!!!</button>
+        <div>Account balance: £{{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
+        <button id="40000" type="button">Buy car 40k</button>
+        <button id="15000" type="button">Holiday 15k</button>
+        <button id="250000" type="button">Flat 250k</button>
       </div>
     </template>
 
     <template id="results">
       <div class="results">
         <div v-if="paperwork && api_key">
-          <h3>Please wait, paperworking...</h3>
-          <img src="images/paperwork.gif">
+          <h3> Please wait, paperworking...</h3>
+          <img style="border-radius: 10px;" src="images/paperwork.gif">
         </div>
         <div v-if="!paperwork && api_key">
           <h3>Welcome {{ punter }}!</h3>
