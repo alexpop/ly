@@ -294,7 +294,55 @@ var Transaction = Vue.component('transaction', {
             console.log("BALANCE " + json.amount);
             this.data["balance"] = json.amount;
           });
-        }, 3000);
+        }, 4000);
+      });
+    },
+    topup(amount) {
+      topUpRequest = {
+        "amount": amount,
+        "uk_sort_code": window.localStorage.getItem("send_ledger_sort_code"),
+        "uk_account_number": window.localStorage.getItem("send_ledger_account_number")
+      }
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Accept', 'application/json');
+      myHeaders.append('Authorization', 'API-Key ' + window.localStorage.getItem("API_KEY"));
+  // Funds to sending ledger
+      fetch("https://play.railsbank.com/dev/customer/transactions/receive", {
+        method : "POST", headers: myHeaders, mode: 'cors',
+        body : JSON.stringify(topUpRequest)
+      }).then(function(response) { return response.json();
+      }).then(function(json) {
+        console.log("SEND LEDGER(funding) £"+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" w/ transaction: "+json.transaction_id);
+        console.log("REFRESHING LIST OF TRANSACTIONS")
+        var result;
+
+        setTimeout(function() {
+          console.log("working...");
+          fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id") + "/entries", {
+            method: 'GET',
+            headers: myHeaders,
+            mode: 'cors'
+          }).then(function(response) {
+            return response.json();
+          }).then(function(json) {
+            console.log("LEDGER ENTRIES (COUNT) rgfdgdfg" + json.length);
+            this.data["dummy_transactions"] = json;
+            var objDiv = document.getElementById("list_of_transactions");
+            objDiv.scrollTop = objDiv.scrollHeight;
+          });
+
+          fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id"), {
+            method: 'GET',
+            headers: myHeaders,
+            mode: 'cors'
+          }).then(function(response) {
+            return response.json();
+          }).then(function(json) {
+            console.log("BALANCE " + json.amount);
+            this.data["balance"] = json.amount;
+          });
+        }, 20000);
       });
     }
   },
@@ -342,8 +390,8 @@ new Vue({
   // DATA
   data() {
     return {
-      compname: 'signup-form'
-      //compname: 'transaction'
+      //compname: 'signup-form'
+      compname: 'transaction'
     }
   },
 
