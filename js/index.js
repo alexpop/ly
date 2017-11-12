@@ -100,14 +100,14 @@ var Results = Vue.component('results', {
       if(contentType && contentType.includes("application/json")) { return response.json(); }
       throw new TypeError("Oops, we haven't got JSON!");
     }).then(function(json) {
-      console.log("Creating user "+json.enduser_id);
+      console.log("ENDUSER(creating)");
       window.localStorage.setItem("enduser_id", json.enduser_id);
 // Wait for enduser to be ready
       fetch("https://play.railsbank.com/v1/customer/endusers/"+json.enduser_id+"/wait", {
         method : "GET", headers: myHeaders
       }).then(function(response) { return response.json();
       }).then(function(json) {
-        console.log("User "+json.enduser_id+" is OK now");
+        console.log("ENDUSER(ready) " + json.enduser_id);
         gbpLedgerRequest = {
           "holder_id": json.enduser_id,
           "partner_product": "ExampleBank-GBP-1",
@@ -124,14 +124,14 @@ var Results = Vue.component('results', {
           body : JSON.stringify(gbpLedgerRequest)
         }).then(function(response) { return response.json();
         }).then(function(json) {
-          console.log("Creating sending ledger "+json.ledger_id);
+          console.log("SEND LEDGER(creating)");
           window.localStorage.setItem("send_ledger_id", json.ledger_id);
 // Wait for the sending_ledger to be created
           fetch("https://play.railsbank.com/v1/customer/ledgers/"+json.ledger_id+"/wait", {
             method : "GET", headers: myHeaders
           }).then(function(response) { return response.json();
           }).then(function(json) {
-            console.log("Sending ledger "+json.ledger_id+" is OK, sort code: "+json.uk_sort_code+" and acc nr "+json.uk_account_number);
+            console.log("SEND LEDGER(ready) "+json.ledger_id+", sort code: "+json.uk_sort_code+", acc nr: "+json.uk_account_number);
             window.localStorage.setItem("send_ledger_sort_code", json.uk_sort_code);
             window.localStorage.setItem("send_ledger_account_number", json.uk_account_number);
             topUpRequest = {
@@ -145,7 +145,7 @@ var Results = Vue.component('results', {
               body : JSON.stringify(topUpRequest)
             }).then(function(response) { return response.json();
             }).then(function(json) {
-              console.log("Funded sending ledger with transaction "+json.transaction_id);
+              console.log("SEND LEDGER(funding), transaction: "+json.transaction_id);
 
 // Create GBP receive_ledger
               fetch("https://play.railsbank.com/v1/customer/ledgers", {
@@ -153,14 +153,14 @@ var Results = Vue.component('results', {
                 body : JSON.stringify(gbpLedgerRequest)
               }).then(function(response) { return response.json();
               }).then(function(json) {
-                console.log("Creating receiving ledger "+json.ledger_id);
+                console.log("RECEIVE LEDGER(creating)");
                 window.localStorage.setItem("receive_ledger_id", json.ledger_id);
 // Wait for the receive_ledger to be created
                 fetch("https://play.railsbank.com/v1/customer/ledgers/"+json.ledger_id+"/wait", {
                   method : "GET", headers: myHeaders
                 }).then(function(response) { return response.json();
                 }).then(function(json) {
-                  console.log("Receiving ledger "+json.ledger_id+" is OK, sort code: "+json.uk_sort_code+" and acc nr "+json.uk_account_number);
+                  console.log("RECEIVE LEDGER(ready) "+json.ledger_id+", sort code: "+json.uk_sort_code+", acc nr: "+json.uk_account_number);
                   window.localStorage.setItem("receive_ledger_sort_code", json.uk_sort_code);
                   window.localStorage.setItem("receive_ledger_account_number", json.uk_account_number);
                   beneficiary = {
@@ -169,7 +169,7 @@ var Results = Vue.component('results', {
                     "asset_type": "gbp",
                     "uk_sort_code": json.uk_sort_code,
                     "uk_account_number": json.uk_account_number,
-                    "person": { "name": "Bobby the Cayman lord" }
+                    "person": { "name": "Amazon Eu s.r.l." }
                   }
 // Create beneficiary for receive ledger
                   fetch("https://play.railsbank.com/v1/customer/beneficiaries", {
@@ -177,24 +177,33 @@ var Results = Vue.component('results', {
                     body : JSON.stringify(beneficiary)
                   }).then(function(response) { return response.json();
                   }).then(function(json) {
-                    console.log("Created beneficiary with id="+json.beneficiary_id);
+                    console.log("BENEFICIARY(creating)");
                     window.localStorage.setItem("receive_beneficiary_id", json.beneficiary_id);
-                    topUpRequest = {
-                      "ledger_id": window.localStorage.getItem("receive_ledger_id"),
-                      "beneficiary_id": json.beneficiary_id,
-                      "payment_type": "payment-type-UK-FasterPayments",
-                      "amount": 100,
-                      "reference": "3GBP FPS Test"
-                    }
-// Transfer funds to beneficiary
-                    fetch("https://play.railsbank.com/v1/customer/transactions", {
-                      method : "POST", headers: myHeaders, mode: 'cors',
-                      body : JSON.stringify(topUpRequest)
+// Wait for the beneficiary to be ready
+                    fetch("https://play.railsbank.com/v1/customer/beneficiaries/"+json.beneficiary_id+"/wait", {
+                      method : "GET", headers: myHeaders
                     }).then(function(response) { return response.json();
                     }).then(function(json) {
-                      console.log("Sent 100GBP to beneficiary via transaction "+json.transaction_id);
-                      data.paperwork = false;
-                    }).catch(function(error) { console.log('Error sending money to beneficiary: ' + error.message); });
+                      console.log("BENEFICIARY(ready) "+json.beneficiary_id);
+
+                      fastPaymentToBeneficiary = {
+                        "ledger_id": window.localStorage.getItem("send_ledger_id"),
+                        "beneficiary_id": json.beneficiary_id,
+                        "payment_type": "payment-type-UK-FasterPayments",
+                        "amount": 1,
+                        "reference": "3GBP FPS Test"
+                      }
+                      //console.log(JSON.stringify(JSON.stringify(fastPaymentToBeneficiary)))
+// Send fast payment to beneficiary
+                      fetch("https://play.railsbank.com/v1/customer/transactions", {
+                        method : "POST", headers: myHeaders, mode: 'cors',
+                        body : JSON.stringify(fastPaymentToBeneficiary)
+                      }).then(function(response) { return response.json();
+                      }).then(function(json) {
+                        console.log("BENEFICIARY verification payment w/ transaction "+json.transaction_id);
+                        data.paperwork = false;
+                      }).catch(function(error) { console.log('Error sending money to beneficiary: ' + error.message); });
+                    }).catch(function(error) { console.log('Error waiting for beneficiary to be ok:' + error.message); });
                   }).catch(function(error) { console.log('Error creating receive beneficiary: ' + error.message); });
                 }).catch(function(error) { console.log('Error waiting for receive ledger: ' + error.message); });
               }).catch(function(error) { console.log('Error creating receive ledger: ' + error.message); });
