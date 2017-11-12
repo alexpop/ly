@@ -46,7 +46,7 @@
     <template id="transaction">
       <div class="transaction">
         <h3>Transaction History</h3>
-        <div style="width: 20em; height: 19em; overflow: auto; margin-right: 0.5em;">
+        <div id="list_of_transactions" style="width: 20em; height: 19em; overflow: auto; margin-right: 0.5em;">
           <table style="width: 100%;">
             <tr v-for = "transaction in dummy_transactions">
               <td class="money-in-row" v-if="transaction.amount > 0">Loan</td>
@@ -57,9 +57,9 @@
           </table>
         </div>
         <div>Account balance: £{{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
-        <button id="40000" type="button">Buy car 40k</button>
-        <button id="15000" type="button">Holiday 15k</button>
-        <button id="250000" type="button">Flat 250k</button>
+        <button id="40000" type="button" @click="buy_stuff(40000)">Buy car 40k</button>
+        <button id="15000" type="button" @click="buy_stuff(15000)">Holiday 15k</button>
+        <button id="250000" type="button" @click="buy_stuff(250000)">Flat 250k</button>
       </div>
     </template>
 

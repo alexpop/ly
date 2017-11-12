@@ -244,7 +244,56 @@ var Terms = Vue.component('terms', {
 var Transaction = Vue.component('transaction', {
   template: '#transaction',
   methods: {
+    buy_stuff(amount) {
+      details = {
+        "ledger_id": window.localStorage.getItem("send_ledger_id"),
+        "beneficiary_id": window.localStorage.getItem("receive_beneficiary_id"),
+        "payment_type": "payment-type-UK-FasterPayments",
+        "amount": amount,
+        "reference": "Mercedes"
+      }
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Accept', 'application/json');
+      myHeaders.append('Authorization', 'API-Key ' + window.localStorage.getItem("API_KEY"));
+      fetch("https://play.railsbank.com/v1/customer/transactions", {
+        method : "POST", headers: myHeaders, mode: 'cors',
+        body : JSON.stringify(details)
+      }).then(function(response) {
+        console.log("BUYING STUFF ");
+        return response.json();
+      }).then(function() {
+        console.log("REFRESHING LIST OF TRANSACTIONS")
+        var result;
 
+        setTimeout(function() {
+          console.log("working...");
+          fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id") + "/entries", {
+            method: 'GET',
+            headers: myHeaders,
+            mode: 'cors'
+          }).then(function(response) {
+            return response.json();
+          }).then(function(json) {
+            console.log("LEDGER ENTRIES (COUNT) rgfdgdfg" + json.length);
+            this.data["dummy_transactions"] = json;
+            var objDiv = document.getElementById("list_of_transactions");
+            objDiv.scrollTop = objDiv.scrollHeight;
+          });
+
+          fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id"), {
+            method: 'GET',
+            headers: myHeaders,
+            mode: 'cors'
+          }).then(function(response) {
+            return response.json();
+          }).then(function(json) {
+            console.log("BALANCE " + json.amount);
+            this.data["balance"] = json.amount;
+          });
+        }, 3000);
+      });
+    }
   },
   data: function() {
     data = {
@@ -278,6 +327,7 @@ var Transaction = Vue.component('transaction', {
       console.log("BALANCE " + json.amount);
       data.balance = json.amount;
     });
+
     return data;
   }
 });
@@ -289,7 +339,7 @@ new Vue({
   // DATA
   data() {
     return {
-      compname: 'signup-form'
+      compname: 'transaction'
     }
   },
 
