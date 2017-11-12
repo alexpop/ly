@@ -5,7 +5,7 @@ var SignupForm = Vue.component('signup-form', {
   // DATA
   data() {
     return {
-      fullname: 'John',
+      fullname: '',
       fullname_msg: '',
       fulladdr: 'Rainmaking Loft, London, E1W 1UN',
       fulladdr_msg: '',
@@ -279,7 +279,7 @@ var Transaction = Vue.component('transaction', {
             this.data["balance"] = json.amount;
 
             if (window.localStorage.getItem("loanamount") / 10 > json.amount) {
-              topup();
+              this.topup();
             }
 
           });
