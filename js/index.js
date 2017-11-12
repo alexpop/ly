@@ -248,7 +248,8 @@ var Transaction = Vue.component('transaction', {
   },
   data: function() {
     data = {
-      dummy_transactions: []
+      dummy_transactions: [],
+      balance: []
     }
     var result;
     var myHeaders = new Headers();
@@ -262,9 +263,20 @@ var Transaction = Vue.component('transaction', {
     }).then(function(response) {
       return response.json();
     }).then(function(json) {
-      console.log(json);
+      console.log("LEDGER ENTRIES (COUNT)" + json.length);
       data.dummy_transactions = json;
       return data;
+    });
+
+    fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id"), {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors'
+    }).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      console.log("BALANCE " + json.amount);
+      data.balance = json.amount;
     });
     return data;
   }
