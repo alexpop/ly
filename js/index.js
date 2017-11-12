@@ -221,6 +221,10 @@ var Results = Vue.component('results', {
     back_to_signup() {
       console.log('In back_to_signup()');
       this.$emit('change_comp', 'signup-form');
+    },
+    proceed_to_transactions() {
+      console.log('In proceed_to_transactions()');
+      this.$emit('change_comp', 'transaction');
     }
   }
 });
@@ -236,6 +240,34 @@ var Terms = Vue.component('terms', {
   }
 });
 
+var Transaction = Vue.component('transaction', {
+  template: '#transaction',
+  methods: {
+
+  },
+  data: function() {
+    data = {
+      dummy_transactions: []
+    }
+    var result;
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Accept', 'application/json');
+    myHeaders.append('Authorization', 'API-Key ' + window.localStorage.getItem("API_KEY"));
+    fetch('https://play.railsbank.com/v1/customer/transactions', {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors'
+    }).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      console.log(json);
+      data.dummy_transactions = json;
+      return data;
+    });
+    return data;
+  }
+});
 
 new Vue({
   // ELEMENT
@@ -252,7 +284,8 @@ new Vue({
   components: {
     'signup-form': SignupForm,
     'results': Results,
-    'terms': Terms
+    'terms': Terms,
+    'transaction': Transaction
   },
 
   methods: {
