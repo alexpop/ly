@@ -255,7 +255,7 @@ var Transaction = Vue.component('transaction', {
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Accept', 'application/json');
     myHeaders.append('Authorization', 'API-Key ' + window.localStorage.getItem("API_KEY"));
-    fetch('https://play.railsbank.com/v1/customer/transactions', {
+    fetch('https://play.railsbank.com/v1/customer/ledgers/' + window.localStorage.getItem("send_ledger_id") + "/entries", {
       method: 'GET',
       headers: myHeaders,
       mode: 'cors'

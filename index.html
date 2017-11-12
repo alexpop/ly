@@ -46,11 +46,12 @@
     <template id="transaction">
       <div class="transaction">
         <h3>Transaction History</h3>
-        <div style="height: 300px; overflow: auto;">
+        <div style="width: 500px; height: 300px; overflow: auto;">
           <table>
             <tr v-for = "transaction in dummy_transactions">
-              <td>{{transaction.reference}}</td>
-              <td>{{transaction.amount}}</td>
+              <td v-if="transaction.amount > 0">Loan</td>
+              <td v-if="transaction.amount < 0">Online payment</td>
+              <td>£{{Math.abs(transaction.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
             </tr>
           </table>
         </div>
