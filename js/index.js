@@ -169,6 +169,10 @@ var Results = Vue.component('results', {
     back_to_signup() {
       console.log('In back_to_signup()');
       this.$emit('change_comp', 'signup-form');
+    },
+    proceed_to_transactions() {
+      console.log('In proceed_to_transactions()');
+      this.$emit('change_comp', 'transaction');
     }
   }
 });
@@ -197,7 +201,7 @@ var Transaction = Vue.component('transaction', {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Accept', 'application/json');
-    myHeaders.append('Authorization', 'API-Key JIG5pjp5aP1fHxRk0BSacp7h3XxWPW3x#dJ3R3l21ol80Us69dzrSRfOxLzYhPtrT9gD4LX4LaTtCf6IoXgS8bCtku3VhIGo6');
+    myHeaders.append('Authorization', 'API-Key ' + window.localStorage.getItem("API_KEY"));
     fetch('https://play.railsbank.com/v1/customer/transactions', {
       method: 'GET',
       headers: myHeaders,
@@ -220,7 +224,7 @@ new Vue({
   // DATA
   data() {
     return {
-      compname: 'transaction'
+      compname: 'signup-form'
     }
   },
 
