@@ -22,7 +22,7 @@
     <template id="signup-form">
       <form>
         <div class="form-group">
-          <label for="fullname">Full Name:</label>
+          <label for="fullname">Name:</label>
           <input type="text" v-model="fullname" />
           <span v-if="fullname.length > 0">{{ fullname_msg }}</span>
         </div>
@@ -64,13 +64,13 @@
 
     <template id="results">
       <div class="results">
-        <div v-if="paperwork">
+        <div v-if="paperwork && api_key">
           <h3>Please wait, paperworking...</h3>
           <img src="images/paperwork.gif">
         </div>
-        <div v-if="complete">
+        <div v-if="!paperwork && api_key">
           <h3>Welcome {{ punter }}!</h3>
-          <p>Successful registration, this is the IBAN account you need to fuel the happiness:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
+          <p>Successful registration, this is the IBAN account you need to <i>somehow</i> transfer funds to:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
           <p>A debit card will be in your post by tomorrow. Let's do some online spending now!</p>
           <button @click="proceed_to_transactions()">Continue</button>
       </div>
@@ -80,7 +80,7 @@
     <template id="terms">
       <div class="terms">
         <h2>One condition</h2>
-        <p class="tandc">Ensure funds <i>somehow</i> arrive into the provided IBAN in order for you to get these amazing loans.<br><br>Spend away!</p>
+        <p class="tandc">Ensure funds <i>somehow</i> arrive into the provided IBAN in order to get these amazing loans.<br><br>Spend away!</p>
         <button @click="back_to_signup()">Back</button>
       </div>
     </template>

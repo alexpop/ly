@@ -6,7 +6,7 @@ var server = require('gulp-server-livereload');
 gulp.task('serve', function() {
   gulp.src('./')
     .pipe(server({
-      livereload: true,
+      //livereload: true,
       open: true,
       host: 'localhost',
       port: 9000,
