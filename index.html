@@ -43,6 +43,25 @@
       </form>
     </template>
 
+    <template id="transaction">
+      <div class="transaction">
+        <h3>Transaction History</h3>
+        <div style="overflow-y:hidden;">
+        <table>
+          <tr v-for = "transaction in dummy_transactions">
+            <td>{{transaction.reference}}</td>
+            <td>{{transaction.amount}}</td>
+          </tr>
+        </table>
+        <button type="button">Click me!!!</button>
+        <button type="button">Click me!!!</button>
+        <button type="button">Click me!!!</button>
+        </div>
+        </div>
+
+        </div>
+        </template>
+
     <template id="results">
       <div class="results">
         <div v-if="paperwork">
@@ -68,6 +87,8 @@
   </div>
 
   <script src='https://unpkg.com/vue@2.1.6/dist/vue.js'></script>
+  <script src='https://unpkg.com/vue-router@2.1.1/dist/vue-router.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
   <script src="js/index.js"></script>
 </body>
 </html>
