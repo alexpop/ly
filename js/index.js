@@ -223,6 +223,9 @@ var Results = Vue.component('results', {
       console.log('In back_to_signup()');
       this.$emit('change_comp', 'signup-form');
     },
+    number_with_comma(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     proceed_to_transactions() {
       console.log('In proceed_to_transactions()');
       this.$emit('change_comp', 'transaction');
@@ -339,7 +342,8 @@ new Vue({
   // DATA
   data() {
     return {
-      compname: 'transaction'
+      compname: 'signup-form'
+      //compname: 'transaction'
     }
   },
 
@@ -357,3 +361,7 @@ new Vue({
     }
   }
 });
+
+function number_with_comma(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

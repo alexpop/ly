@@ -56,10 +56,16 @@
             </tr>
           </table>
         </div>
-        <div>Account balance: £{{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</div>
-        <button id="40000" type="button" @click="buy_stuff(40000)">Buy car 40k</button>
-        <button id="15000" type="button" @click="buy_stuff(15000)">Holiday 15k</button>
-        <button id="250000" type="button" @click="buy_stuff(250000)">Flat 250k</button>
+        <div style="width: 20em; margin-right: 0.5em; margin-bottom: 1em;">
+          <span class="left">Account balance:</span> <span class="right" style="font-weight: 800;">£{{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
+        </div>
+        <br>
+        <div style="width: 20em; margin-right: 0.5em; margin-bottom: 1.5em;">
+          <button class="buy-button" id="40000" type="button" @click="buy_stuff(40000)">Car 40k</button>
+          <button class="buy-button" id="15000" type="button" @click="buy_stuff(15000)">Trip 15k</button>
+          <button class="buy-button" id="250000" type="button" @click="buy_stuff(250000)">Gold 80k</button>
+          <button class="buy-button" style="background: linear-gradient(to left, #118700, #21B100);" type="button">LOAN</button>
+        </div>
       </div>
     </template>
 
@@ -73,7 +79,7 @@
           <h3>Welcome {{ punter }}!</h3>
           <p>Successful registration, this is the IBAN account you need to <i>somehow</i> transfer funds to:</p> <pre>SK20000CH33KY0000CA1MAN5</pre>
           <p>A debit card will be in your post by tomorrow. Let's do some online spending now!</p>
-          <button @click="proceed_to_transactions()">Continue</button>
+          <button class="orange-button" @click="proceed_to_transactions()">Continue</button>
       </div>
       </div>
     </template>
