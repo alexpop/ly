@@ -46,21 +46,19 @@
     <template id="transaction">
       <div class="transaction">
         <h3>Transaction History</h3>
-        <div style="overflow-y:hidden;">
-        <table>
-          <tr v-for = "transaction in dummy_transactions">
-            <td>{{transaction.reference}}</td>
-            <td>{{transaction.amount}}</td>
-          </tr>
-        </table>
+        <div style="height: 300px; overflow: auto;">
+          <table>
+            <tr v-for = "transaction in dummy_transactions">
+              <td>{{transaction.reference}}</td>
+              <td>{{transaction.amount}}</td>
+            </tr>
+          </table>
+        </div>
         <button type="button">Click me!!!</button>
         <button type="button">Click me!!!</button>
         <button type="button">Click me!!!</button>
-        </div>
-        </div>
-
-        </div>
-        </template>
+      </div>
+    </template>
 
     <template id="results">
       <div class="results">
