@@ -186,24 +186,7 @@ var Results = Vue.component('results', {
                     }).then(function(response) { return response.json();
                     }).then(function(json) {
                       console.log("BENEFICIARY(ready) "+json.beneficiary_id);
-
-                      fastPaymentToBeneficiary = {
-                        "ledger_id": window.localStorage.getItem("send_ledger_id"),
-                        "beneficiary_id": json.beneficiary_id,
-                        "payment_type": "payment-type-UK-FasterPayments",
-                        "amount": 1,
-                        "reference": "3GBP FPS Test"
-                      }
-                      //console.log(JSON.stringify(JSON.stringify(fastPaymentToBeneficiary)))
-// Send fast payment to beneficiary
-                      fetch("https://play.railsbank.com/v1/customer/transactions", {
-                        method : "POST", headers: myHeaders, mode: 'cors',
-                        body : JSON.stringify(fastPaymentToBeneficiary)
-                      }).then(function(response) { return response.json();
-                      }).then(function(json) {
-                        console.log("BENEFICIARY verification payment w/ transaction "+json.transaction_id);
-                        data.paperwork = false;
-                      }).catch(function(error) { console.log('Error sending money to beneficiary: ' + error.message); });
+                      data.paperwork = false;
                     }).catch(function(error) { console.log('Error waiting for beneficiary to be ok:' + error.message); });
                   }).catch(function(error) { console.log('Error creating receive beneficiary: ' + error.message); });
                 }).catch(function(error) { console.log('Error waiting for receive ledger: ' + error.message); });
@@ -300,7 +283,7 @@ var Transaction = Vue.component('transaction', {
             }
 
           });
-        }, 4000);
+        }, 8000);
       });
     },
     topup() {
