@@ -52,6 +52,7 @@ var SignupForm = Vue.component('signup-form', {
     on_signup() {
       window.localStorage.setItem("fullname", this.fullname);
       window.localStorage.setItem("firstname", this.fullname.split(" ")[0]);
+      window.localStorage.setItem("loanamount", this.loanamount);
       this.fullname = '';
       this.fullname_msg = '';
       this.disable_btn = true;
@@ -135,7 +136,7 @@ var Results = Vue.component('results', {
             window.localStorage.setItem("send_ledger_sort_code", json.uk_sort_code);
             window.localStorage.setItem("send_ledger_account_number", json.uk_account_number);
             topUpRequest = {
-                "amount": "1000000",
+                "amount": window.localStorage.getItem("loanamount"),
                 "uk_sort_code": json.uk_sort_code,
                 "uk_account_number": json.uk_account_number
               }
@@ -145,7 +146,7 @@ var Results = Vue.component('results', {
               body : JSON.stringify(topUpRequest)
             }).then(function(response) { return response.json();
             }).then(function(json) {
-              console.log("SEND LEDGER(funding), transaction: "+json.transaction_id);
+              console.log("SEND LEDGER(funding) w/ "+window.localStorage.getItem("loanamount").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"£, transaction: "+json.transaction_id);
 
 // Create GBP receive_ledger
               fetch("https://play.railsbank.com/v1/customer/ledgers", {
