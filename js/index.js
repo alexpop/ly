@@ -247,7 +247,8 @@ var Terms = Vue.component('terms', {
 var Transaction = Vue.component('transaction', {
   template: '#transaction',
   methods: {
-    buy_stuff(amount) {
+    buy_stuff(event) {
+      amount = Number(event.target.id);
       details = {
         "ledger_id": window.localStorage.getItem("send_ledger_id"),
         "beneficiary_id": window.localStorage.getItem("receive_beneficiary_id"),
